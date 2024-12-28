@@ -1,0 +1,22 @@
+[
+    {
+        "id":1,
+        "name":"Albert",
+        "role":"Infrastructure Engineer",
+        "email":"colealbert88@hotmail.com",
+        "phone":"888-888-0000",
+        "contacted":true
+    },
+    {
+
+        "id":2,
+        "name":"Makri",
+        "role":"Data Analyst",
+        "email":"makrichevi1@aol.com",
+        "phone":"871-888-2233",
+        "contacted":true
+
+
+    }
+
+]

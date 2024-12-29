@@ -44,7 +44,7 @@ This is a sample Customer Relationship Management (CRM) API built with Go. It pr
 
 ### Prerequisites
 
-- Go 1.22 or higher
+- Go 1.23.3 or higher
 - Docker (optional, for containerized deployment)
 
 ### Local Development
@@ -65,7 +65,7 @@ This is a sample Customer Relationship Management (CRM) API built with Go. It pr
     go run main.go
     ```
 
-4. The API will be available at `http://localhost:8080`.
+4. The API will be available at `http://localhost:3000/customers`.
 
 ### Containerized Deployment
 
@@ -76,10 +76,10 @@ This is a sample Customer Relationship Management (CRM) API built with Go. It pr
 
 2. Run the Docker container:
     ```sh
-    docker run -p -d 3000:3000 crm-api
+    docker run -p  3000:3000 crm-api
     ```
 
-3. The API will be available at `http://localhost:3000`.
+3. The API will be available at `http://localhost:3000/customers`.
 
 ## Sample Data
 

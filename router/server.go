@@ -9,8 +9,9 @@ import (
 
 func Server() {
 	r := mux.NewRouter()
-	r.HandleFunc("/customers", GetAll)
-	r.HandleFunc("/userid/{id}/", GetCustomer)
+	r.HandleFunc("/", Index)
+	r.HandleFunc("/customers", GetAll).Methods("GET")
+	r.HandleFunc("/userid/{id}/", GetCustomer).Methods("GET")
 	r.HandleFunc("/customer", CreateCustomer).Methods("POST")
 	r.HandleFunc("/customerupdate/{id}/", UpdateUser).Methods("PUT")
 	r.HandleFunc("/delete/customer/{id}/", RemoveCustomer).Methods("DELETE")

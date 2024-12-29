@@ -11,6 +11,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
+func Index(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "<h2> Welcome To CRM API </h2>")
+}
+
 func GetAll(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
 	var customer []Customer

@@ -1,12 +1,13 @@
 # CRM API
 
-This is a sample Customer Relationship Management (CRM) API built with Go. It provides basic functionalities to manage customer data, including creating, reading, and deleting customer records. This API is designed to be a simple example that can be used for containerized application deployments or other educational purposes.
+This is a sample Customer Relationship Management (CRM) API built with Go. It provides basic functionalities to manage customer data, including creating, reading, updating, and deleting customer records. This API is designed to be a simple example that can be used for containerized application deployments or other educational purposes.
 
 ## Features
 
 - **Get All Customers**: Retrieve a list of all customers.
 - **Create Customer**: Add a new customer to the database.
 - **Remove Customer**: Delete a customer from the database by ID.
+- **Update Customer**: Update customer by ID.
 
 ## Endpoints
 
@@ -28,8 +29,14 @@ This is a sample Customer Relationship Management (CRM) API built with Go. It pr
 - **Request Body**: JSON object representing the customer to be added.
 - **Response**: JSON object of the created customer.
 
+### Update Customer
+- **URL**: `/customerupdate/{id}/`
+- **Method**: `PUT`
+- **Request Body**: JSON object representing the customer to be updated.
+- **Response**: JSON object of customers list.
+
 ### Remove Customer
-- **URL**: `delete/customers/{id}`
+- **URL**: `/delete/customers/{id}`
 - **Method**: `DELETE`
 - **Response**: No content.
 
@@ -37,7 +44,7 @@ This is a sample Customer Relationship Management (CRM) API built with Go. It pr
 
 ### Prerequisites
 
-- Go 1.18 or higher
+- Go 1.22 or higher
 - Docker (optional, for containerized deployment)
 
 ### Local Development
@@ -69,10 +76,10 @@ This is a sample Customer Relationship Management (CRM) API built with Go. It pr
 
 2. Run the Docker container:
     ```sh
-    docker run -p 8080:8080 crm-api
+    docker run -p -d 3000:3000 crm-api
     ```
 
-3. The API will be available at `http://localhost:8080`.
+3. The API will be available at `http://localhost:3000`.
 
 ## Sample Data
 

@@ -126,13 +126,27 @@ func RemoveCustomer(w http.ResponseWriter, r *http.Request) {
 	database := fmt.Sprintf("%v/router/database.json", data)
 	file, err := os.ReadFile(database)
 
+	if err != nil {
+		http.Error(w, "Unable to read in database", http.StatusRequestTimeout)
+		return
+	}
+
 	json.Unmarshal(file, &customers)
 
 	for i, data := range customers {
 		if data.ID == idn {
 			customers = slices.Delete(customers, i, i+1)
-
+			break
 		}
 	}
 
+	// json.NewEncoder(w).Encode(customers)
+
+	writebacktofile, _ := json.MarshalIndent(customers, "", " ")
+	write, _ := os.OpenFile(database, os.O_RDWR|os.O_TRUNC, 0644)
+
+	defer write.Close()
+	write.Write(writebacktofile)
+
+	w.WriteHeader(204)
 }

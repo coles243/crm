@@ -1,22 +1,26 @@
 [
-    {
-        "id":1,
-        "name":"Albert",
-        "role":"Infrastructure Engineer",
-        "email":"colealbert88@hotmail.com",
-        "phone":"888-888-0000",
-        "contacted":true
-    },
-    {
-
-        "id":2,
-        "name":"Makri",
-        "role":"Data Analyst",
-        "email":"makrichevi1@aol.com",
-        "phone":"871-888-2233",
-        "contacted":true
-
-
-    }
-
+  {
+    "id": 1,
+    "name": "Albert",
+    "role": "Infrastructure Engineer",
+    "email": "colealbert88@hotmail.com",
+    "phone": "888-888-0000",
+    "contacted": true
+  },
+  {
+    "id": 2,
+    "name": "Makri",
+    "role": "Data Analyst",
+    "email": "makrichevi1@aol.com",
+    "phone": "871-888-2233",
+    "contacted": true
+  },
+  {
+    "id": 3,
+    "name": "Jane",
+    "role": "Tech Support",
+    "email": "janedoe@yahoo.com",
+    "phone": "751-900-3333",
+    "contacted": true
+  }
 ]

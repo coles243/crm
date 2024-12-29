@@ -1,11 +1,11 @@
 package router
 
 type Customer struct {
-	ID        int    `json:"id"`
+	ID        int    `json:"id,omitempty"`
 	Name      string `json:"name"`
 	Role      string `json:"role"`
 	Email     string `json:"email"`
-	Phone     string `json:"Phone"`
+	Phone     string `json:"phone"`
 	Contacted bool   `json:"contacted"`
 }
 

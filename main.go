@@ -7,8 +7,6 @@ import (
 )
 
 func main() {
-
-	fmt.Println("Hello there from web")
-
+	fmt.Println("Starting Up Server...")
 	router.Server()
 }

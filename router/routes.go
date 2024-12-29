@@ -12,49 +12,61 @@ import (
 )
 
 func GetAll(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-type", "application/json")
 	var customer []Customer
 	data, err := os.Getwd()
 	if err != nil {
-		fmt.Fprintln(w, "Unable to initalize with Database")
-		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Unable to intialize  with database", http.StatusBadGateway)
+		return
 
 	}
 	database := fmt.Sprintf("%v/router/database.json", data)
 	file, err := os.ReadFile(database)
 	if err != nil {
-		fmt.Fprintln(w, "Unable to read from database")
-		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Unable to Read from database", http.StatusBadGateway)
+		return
 	}
 	// create a list of structs to deseralize the json file
 	json.Unmarshal(file, &customer)
 	// then we will  reseralize the data as json content
 	json.NewEncoder(w).Encode(customer)
+	w.WriteHeader(http.StatusOK)
 
 }
 
 func GetCustomer(w http.ResponseWriter, r *http.Request) {
 	var customer []Customer
 	// grab response from user
-	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-type", "application/json")
 	response := mux.Vars(r)
 
 	// grab data from database
-	datas, _ := os.Getwd()
-	database := fmt.Sprintf("%v/router/database.json", datas)
-	file, err := os.ReadFile(database)
+	datas, err := os.Getwd()
 	if err != nil {
-		fmt.Fprintln(w, "Unable to read from database")
-		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Unable to intialize  with database", http.StatusBadGateway)
+		return
 
 	}
 
-	intconversion, _ := strconv.Atoi(response["id"])
+	database := fmt.Sprintf("%v/router/database.json", datas)
+	file, err := os.ReadFile(database)
+	if err != nil {
+		http.Error(w, "Unable to Read from database", http.StatusBadGateway)
+		return
 
+	}
+
+	intconversion, err := strconv.Atoi(response["id"])
+	if err != nil {
+		http.Error(w, "Unable to Parse ID input", http.StatusBadRequest)
+		return
+	}
 	// create a list of structs to deseralize the json file
-	json.Unmarshal(file, &customer)
+	err = json.Unmarshal(file, &customer)
+	if err != nil {
+		http.Error(w, "Error parsing database content", http.StatusInternalServerError)
+		return
+	}
 
 	for _, data := range customer {
 		if data.ID == intconversion {
@@ -149,4 +161,92 @@ func RemoveCustomer(w http.ResponseWriter, r *http.Request) {
 	write.Write(writebacktofile)
 
 	w.WriteHeader(204)
+}
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-type", "application/json")
+
+	var customer Customer
+	var dbCustomer []Customer
+	response := mux.Vars(r)
+
+	json.NewDecoder(r.Body).Decode(&customer)
+
+	intconversion, err := strconv.Atoi(response["id"])
+	if err != nil {
+		http.Error(w, "Unable to Parse ID input", http.StatusBadRequest)
+		return
+
+	}
+
+	// readfile
+	data, err := os.Getwd()
+	if err != nil {
+		http.Error(w, "Unable to intialize  with database", http.StatusBadGateway)
+		return
+
+	}
+	database := fmt.Sprintf("%v/router/database.json", data)
+	file, err := os.ReadFile(database)
+	if err != nil {
+		http.Error(w, "Unable to Read from database", http.StatusBadGateway)
+		return
+	}
+	// create a list of structs to deseralize the json file
+	err = json.Unmarshal(file, &dbCustomer)
+	if err != nil {
+		http.Error(w, "Error parsing database content", http.StatusInternalServerError)
+		return
+	}
+
+	customerFound := false
+	for i, data := range dbCustomer {
+		if data.ID == intconversion {
+			if customer.Role != nil {
+				dbCustomer[i].Role = customer.Role
+			}
+			if customer.Name != nil {
+				dbCustomer[i].Name = customer.Name
+			}
+			if customer.Email != nil {
+				dbCustomer[i].Email = customer.Email
+			}
+			if customer.Phone != nil {
+				dbCustomer[i].Phone = customer.Phone
+			}
+			if customer.Contacted != nil {
+				dbCustomer[i].Contacted = customer.Contacted
+			}
+			customerFound = true
+			break
+		}
+
+	}
+	if !customerFound {
+		http.Error(w, "Customer not found", http.StatusNotFound)
+		return
+	}
+
+	writebacktofile, err := json.MarshalIndent(dbCustomer, "", " ")
+	if err != nil {
+		http.Error(w, "Error formatting JSON output", http.StatusInternalServerError)
+		return
+	}
+
+	write, err := os.OpenFile(database, os.O_RDWR|os.O_TRUNC, 0644)
+	if err != nil {
+		http.Error(w, "Unable to write to database", http.StatusInternalServerError)
+		return
+	}
+
+	defer write.Close()
+	_, err = write.Write(writebacktofile)
+	if err != nil {
+		http.Error(w, "Error writing to database", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(dbCustomer)
+
 }
